@@ -24,16 +24,14 @@ $borderColor: #6caeef;
   padding: 0;
   background-color: transparent;
 }
-@mixin btnCS($hoverColor){
+@mixin btnCS(){
   width: 100px;
   height: 30px;
   border-radius: 5px;
   padding: 5px;
+  font-weight: 700;
   cursor: pointer;
   transition: .2s;
-  &:hover{
-    box-shadow: 3px 3px 0 0 $hoverColor;
-  }
   &:active{
     box-shadow: none;
   }
