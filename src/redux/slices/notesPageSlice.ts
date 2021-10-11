@@ -1,19 +1,18 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {shallowEqual} from "react-redux";
-import {useAppDispatch, useAppSelector} from "../store";
 
-
-type Category = 'Task' | 'Random Thought' | 'Idea';
-type Note = {
-    id: number
-    isActive: boolean
+export type Category = 'Task' | 'Random Thought' | 'Idea';
+export type NoteFields = {
     name: string
     created: string,
     category: Category
     content: string
     dates: string
+}
+export type NoteItem = NoteFields & {
+    id: number
+    isActive: boolean
 };
-type EditNotePayloadType = {
+export type EditNotePayloadType = {
     id: number
     isActive?: boolean
     name?: string
@@ -23,7 +22,7 @@ type EditNotePayloadType = {
     dates?: string
 }
 type initialStateType = {
-    notes: Note[]
+    notes: NoteItem[]
 }
 const initialState: initialStateType = {
     notes: [
@@ -93,33 +92,24 @@ const initialState: initialStateType = {
     ]
 }
 
-const notesPageReducer = createSlice({
+const notesPageSlice = createSlice({
     name: 'notesPage',
     initialState,
     reducers: {
         deleteNote: (state, action: PayloadAction<number>) => {
-
+            const index = state.notes.findIndex(note => note.id === action.payload);
+            if (index >= 0) state.notes.splice(index, 1);
         },
-        addNote: (state, action: PayloadAction<Note>) => {
-
+        addNote: (state, action: PayloadAction<NoteItem>) => {
+            state.notes = [...state.notes, action.payload]
         },
         editNote: (state, action: PayloadAction<EditNotePayloadType>) => {
-
+            state.notes.forEach((note, i) => {
+                if (note.id === action.payload.id) state.notes[i] = { ...note, ...action.payload }
+            })
         }
     }
 })
 
-const { deleteNote, addNote, editNote } = notesPageReducer.actions;
-
-export const useNotesPageSelector = () => ({
-    notes: useAppSelector(state => state.notesPage.notes, shallowEqual)
-})
-export const useNotesPageDispatch = () => {
-    const dispatch = useAppDispatch();
-    return {
-        deleteNote: (id: number) => dispatch(deleteNote(id)),
-        addNote: (note: Note) => dispatch(addNote(note)),
-        editNote: (editedFields: EditNotePayloadType) => dispatch(editNote(editedFields))
-    }
-}
-export default notesPageReducer.reducer;
+export const { deleteNote, addNote, editNote } = notesPageSlice.actions;
+export default notesPageSlice.reducer;
