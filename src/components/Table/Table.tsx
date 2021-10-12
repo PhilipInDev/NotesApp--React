@@ -17,7 +17,7 @@ const Table: FC<TableItemPropsType> = ({ columns, renderControllers = false, hei
     const controllers = renderControllers
         ? controllersTypes.map((type) => {
         return <ControllerBtn type={type}
-                              color={'white'}
+                              color={'light'}
                               isAll={true}
                               key={nanoid()}/>
         })
