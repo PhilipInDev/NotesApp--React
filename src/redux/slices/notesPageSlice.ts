@@ -8,7 +8,7 @@ export type NoteFields = {
     content: string
     dates: string
 }
-export type NoteItem = NoteFields & {
+export type NoteItemType = NoteFields & {
     id: number
     isActive: boolean
 };
@@ -22,7 +22,9 @@ export type EditNotePayloadType = {
     dates?: string
 }
 type initialStateType = {
-    notes: NoteItem[]
+    notes: NoteItemType[]
+    editingNotes: number[]
+    categories: Category[]
 }
 const initialState: initialStateType = {
     notes: [
@@ -89,7 +91,9 @@ const initialState: initialStateType = {
             content: 'Really good idea',
             dates: ''
         }
-    ]
+    ],
+    editingNotes: [],
+    categories: ['Task', 'Idea', 'Random Thought']
 }
 
 const notesPageSlice = createSlice({
@@ -100,16 +104,24 @@ const notesPageSlice = createSlice({
             const index = state.notes.findIndex(note => note.id === action.payload);
             if (index >= 0) state.notes.splice(index, 1);
         },
-        addNote: (state, action: PayloadAction<NoteItem>) => {
+        addNote: (state, action: PayloadAction<NoteItemType>) => {
             state.notes = [...state.notes, action.payload]
         },
         editNote: (state, action: PayloadAction<EditNotePayloadType>) => {
             state.notes.forEach((note, i) => {
                 if (note.id === action.payload.id) state.notes[i] = { ...note, ...action.payload }
             })
+        },
+        toggleEditing: (state, action: PayloadAction<number | null>) => {
+            if (action.payload === null) state.editingNotes.pop();
+            if (action.payload !== null) {
+                state.editingNotes.pop();
+                state.editingNotes.push(action.payload);
+            }
+            
         }
     }
 })
 
-export const { deleteNote, addNote, editNote } = notesPageSlice.actions;
+export const { deleteNote, addNote, editNote, toggleEditing } = notesPageSlice.actions;
 export default notesPageSlice.reducer;
