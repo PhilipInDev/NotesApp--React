@@ -1,13 +1,15 @@
 import './ControllerBtn.scss';
-import {FC} from "react";
+import {FC, MouseEventHandler} from "react";
 
 export type ControllerBtnTypes = 'Archive' | 'Unzip' | 'Edit' | 'Submit' | 'Delete';
 type ControllerBtnProps = {
     type: ControllerBtnTypes
-    color: string
+    color: 'light' | 'blue'
     isAll: boolean
+    onClick?: MouseEventHandler<HTMLDivElement>
 }
-const ControllerBtn: FC<ControllerBtnProps> = ({ type, color, isAll }) => {
+const ControllerBtn: FC<ControllerBtnProps> = ({ type, color, isAll, onClick}) => {
+    const colorStyle = color === 'light' ? 'white' : '#569adf';
     let iconClasses;
     switch (type) {
         case 'Archive':
@@ -29,7 +31,10 @@ const ControllerBtn: FC<ControllerBtnProps> = ({ type, color, isAll }) => {
             iconClasses = 'far fa-question-circle'
     }
     return(
-        <div className={'controller-btn'} title={isAll ? type + ' All' : type} style={{ color: color }}>
+        <div className={'controller-btn'}
+             onClick={onClick}
+             title={isAll ? type + ' All' : type}
+             style={{ color: colorStyle }}>
             <i className={iconClasses}/>
         </div>
     )
