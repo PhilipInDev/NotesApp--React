@@ -2,6 +2,7 @@
 
 .table{
   font-family: sans-serif;
+  overflow: auto;
   &__header{
     display: flex;
     justify-content: space-around;
