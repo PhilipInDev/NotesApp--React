@@ -1,0 +1,9 @@
+@import "../../sharedStyles";
+
+.controller-btn{
+  padding: 4px;
+  @include flexCenter();
+  i{
+    @include iconsCS();
+  }
+}

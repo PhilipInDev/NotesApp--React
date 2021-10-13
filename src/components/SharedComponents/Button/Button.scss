@@ -1,0 +1,25 @@
+@import "../../sharedStyles";
+
+.common-btn{
+  &--green{
+    background-color: limegreen;
+    &:hover{
+      box-shadow: 3px 3px 0 #7fff6b;
+    }
+  }
+  &--blue{
+    background-color: #6caeef;
+    &:hover{
+      box-shadow: 3px 3px 0 #8ec7fd;
+    }
+  }
+  @include btnReset();
+  @include btnCS();
+  i{
+    font-size: $iconsFz;
+  }
+  &--disabled{
+    pointer-events: none;
+    cursor: default;
+  }
+}

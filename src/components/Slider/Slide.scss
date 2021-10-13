@@ -1,0 +1,48 @@
+@import "../sharedStyles";
+
+
+.slide{
+  width: 0;
+  opacity: 0;
+  height: 100%;
+  min-height: min-content;
+  transition: .5s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+  &:after {
+    content: "";
+    display: block;
+    flex: 0 0 15px;
+    width: 100%;
+  }
+  &__title{
+    margin: 0;
+    order: -1;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: block;
+    padding: 7px 10px;
+    color: $tableHeaderBgColor;
+    background-color: white;
+    box-shadow: 1px 0 2px $tableHeaderBgColor;
+    font-style: italic;
+    font-size: 14px;
+  }
+  &--current{
+    //animation: slideOnInit .5s;
+    width: 100%;
+    opacity: 1;
+  }
+}
+@keyframes slideOnInit {
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
+}
