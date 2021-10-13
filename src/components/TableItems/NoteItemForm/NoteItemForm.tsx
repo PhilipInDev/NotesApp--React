@@ -1,5 +1,5 @@
 import {NoteFields} from "../../../redux/slices/notesPageSlice";
-import {FC} from "react";
+import {FC, useEffect, useRef} from "react";
 import {useNotesPageDispatch, useNotesPageSelector} from "../../../redux/hooks/notesPageHooks";
 import {Formik} from "formik";
 import * as Yup from "yup";
@@ -15,6 +15,10 @@ type NoteItemFormPropsType = {
 const NoteItemForm: FC<NoteItemFormPropsType> = ({ fields, id, formikRef }) => {
     const { editNote } = useNotesPageDispatch();
     const { categories } = useNotesPageSelector();
+    const firstFieldRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        if (firstFieldRef && firstFieldRef.current) firstFieldRef.current.focus()
+    })
     return(
         <Formik
             innerRef={formikRef}
@@ -45,7 +49,9 @@ const NoteItemForm: FC<NoteItemFormPropsType> = ({ fields, id, formikRef }) => {
                         <Field isEditable={true}
                                name={'nameInput'}
                                value={formik.values.nameInput}
+                               error={formik.errors.nameInput}
                                onChange={formik.handleChange}
+                               fieldRef={firstFieldRef}
                                key={`${id}__name`}
                         />
                         <Field innerText={fields.created}
@@ -65,6 +71,7 @@ const NoteItemForm: FC<NoteItemFormPropsType> = ({ fields, id, formikRef }) => {
                         <Field isEditable={true}
                                name={'contentInput'}
                                value={formik.values.contentInput}
+                               error={formik.errors.contentInput}
                                onChange={formik.handleChange}
                                key={`${id}__content`}
                         />
