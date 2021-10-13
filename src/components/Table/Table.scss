@@ -2,12 +2,12 @@
 
 .table{
   font-family: sans-serif;
-  overflow: auto;
+  overflow: hidden;
   &__header{
     display: flex;
     justify-content: space-around;
     position: relative;
-    padding: 10px 90px ;
+    padding: 10px 90px;
     background-color: $tableHeaderBgColor;
     box-sizing: border-box;
     height: 45px;
