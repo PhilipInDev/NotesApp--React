@@ -15,4 +15,11 @@
   }
   @include btnReset();
   @include btnCS();
+  i{
+    font-size: $iconsFz;
+  }
+  &--disabled{
+    pointer-events: none;
+    cursor: default;
+  }
 }
