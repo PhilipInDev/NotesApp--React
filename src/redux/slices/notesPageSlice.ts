@@ -21,10 +21,13 @@ export type EditNotePayloadType = {
     content?: string
     dates?: string
 }
+export type DeleteAllNotesPayloadType = 'All' | 'Active' | 'Archived';
+export type CurrentSlideType = 'Active' | 'Archived';
 type initialStateType = {
     notes: NoteItemType[]
     editingNotes: number[]
     categories: Category[]
+    currentSlide: CurrentSlideType
 }
 const initialState: initialStateType = {
     notes: [
@@ -93,7 +96,8 @@ const initialState: initialStateType = {
         }
     ],
     editingNotes: [],
-    categories: ['Task', 'Idea', 'Random Thought']
+    categories: ['Task', 'Idea', 'Random Thought'],
+    currentSlide: 'Active'
 }
 
 const notesPageSlice = createSlice({
@@ -104,13 +108,32 @@ const notesPageSlice = createSlice({
             const index = state.notes.findIndex(note => note.id === action.payload);
             if (index >= 0) state.notes.splice(index, 1);
         },
+        deleteAllNotes: (state, action: PayloadAction<DeleteAllNotesPayloadType>) => {
+            switch (action.payload) {
+                case 'All':
+                    state.notes = [];
+                    break;
+                case 'Active':
+                    state.notes = state.notes.filter(note => !note.isActive);
+                    break;
+                case 'Archived':
+                    state.notes = state.notes.filter(note => note.isActive);
+                    break;
+            }
+        },
         addNote: (state, action: PayloadAction<NoteItemType>) => {
-            state.notes = [...state.notes, action.payload]
+            state.notes.unshift(action.payload)
         },
         editNote: (state, action: PayloadAction<EditNotePayloadType>) => {
             state.notes.forEach((note, i) => {
                 if (note.id === action.payload.id) state.notes[i] = { ...note, ...action.payload }
             })
+        },
+        archiveAllNotes: (state) => {
+            state.notes.forEach(note => note.isActive = false)
+        },
+        unzipAllNotes: (state) => {
+            state.notes.forEach(note => note.isActive = true)
         },
         toggleEditing: (state, action: PayloadAction<number | null>) => {
             if (action.payload === null) state.editingNotes.pop();
@@ -118,10 +141,22 @@ const notesPageSlice = createSlice({
                 state.editingNotes.pop();
                 state.editingNotes.push(action.payload);
             }
-            
+        },
+        toggleCurrentSlide: (state) => {
+            if (state.currentSlide === 'Active') state.currentSlide = 'Archived';
+            else state.currentSlide = 'Active'
         }
     }
 })
 
-export const { deleteNote, addNote, editNote, toggleEditing } = notesPageSlice.actions;
+export const {
+    deleteNote,
+    addNote,
+    editNote,
+    toggleEditing,
+    deleteAllNotes,
+    archiveAllNotes,
+    unzipAllNotes,
+    toggleCurrentSlide} = notesPageSlice.actions;
+
 export default notesPageSlice.reducer;
