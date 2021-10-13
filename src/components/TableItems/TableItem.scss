@@ -29,6 +29,7 @@ $fieldsFz: 14px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    position: relative;
     box-sizing: border-box;
     min-width: 0;
     p{
@@ -44,6 +45,18 @@ $fieldsFz: 14px;
       @include inputReset();
       @include tableElementsCS();
     }
+  }
+  &__field-error{
+    font-size: 13px;
+    font-style: italic;
+    color: #fb7676;
+    position: absolute;
+    bottom: -15px;
+    left: 5px;
+  }
+  &__input-error{
+    outline: 2px solid #fb7676 !important;
+    border: 1px solid #fb7676 !important;
   }
   &__category-icon-box{
     i{
