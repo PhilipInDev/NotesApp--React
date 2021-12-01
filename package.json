@@ -1,5 +1,6 @@
 {
   "name": "notes_app--react",
+  "homepage": "https://philipindev.github.io/NotesApp--React/"
   "version": "0.1.0",
   "private": true,
   "dependencies": {
